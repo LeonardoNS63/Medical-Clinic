@@ -1,18 +1,21 @@
 window.addEventListener("load", () => {
+    document.body.classList.add("loaded");
+});
+
+window.addEventListener("load", () => {
     document.getElementById("app").classList.add("show");
 });
 
-// ─── Máscara de telefone automática ────────────────────────────────────
 document.getElementById("telefone").addEventListener("input", function () {
-    let valor = this.value.replace(/\D/g, ""); // remove tudo que não é número
+    let valor = this.value.replace(/\D/g, ""); 
 
     if (valor.length <= 10) {
-        // Telefone fixo: (11) 1234-5678
+
         valor = valor
             .replace(/^(\d{2})(\d)/, "($1) $2")
             .replace(/(\d{4})(\d)/, "$1-$2");
     } else {
-        // Celular: (11) 91234-5678
+
         valor = valor
             .replace(/^(\d{2})(\d)/, "($1) $2")
             .replace(/(\d{5})(\d)/, "$1-$2");
@@ -21,9 +24,8 @@ document.getElementById("telefone").addEventListener("input", function () {
     this.value = valor;
 });
 
-// ─── Função principal de cadastro ───────────────────────────────────────
 async function cadastrar() {
-    // Coleta os valores dos campos
+
     const nome           = document.getElementById("nome").value.trim();
     const email          = document.getElementById("email").value.trim();
     const telefone       = document.getElementById("telefone").value.trim();
@@ -33,11 +35,9 @@ async function cadastrar() {
     const btnCadastrar   = document.getElementById("btn-cadastrar");
     const feedbackEl     = document.getElementById("mensagem-feedback");
 
-    // Limpa todos os erros antes de revalidar
     limparTodosErros();
     esconderFeedback(feedbackEl);
 
-    // ── Validações individuais por campo ──────────────────────────────
     let temErro = false;
 
     if (nome === "") {
@@ -86,14 +86,11 @@ async function cadastrar() {
         temErro = true;
     }
 
-    // Se algum campo falhou na validação, para aqui
     if (temErro) return;
 
-    // ── Desabilita o botão enquanto aguarda resposta ──────────────────
     btnCadastrar.disabled = true;
     btnCadastrar.textContent = "Cadastrando...";
 
-    // Monta o body da requisição — telefone enviado só com números
     const body = {
         nome,
         email,
@@ -110,7 +107,6 @@ async function cadastrar() {
         });
 
         if (resposta.status === 409) {
-            // 409 Conflict = email já cadastrado
             mostrarErroCampo("erro-email", "Este email já está cadastrado.");
             return;
         }
@@ -120,10 +116,8 @@ async function cadastrar() {
             return;
         }
 
-        // ── Cadastro bem-sucedido ─────────────────────────────────────
         mostrarFeedback(feedbackEl, "Conta criada com sucesso! Redirecionando para o login...", "sucesso");
 
-        // Aguarda 2 segundos e redireciona pro login
         setTimeout(() => {
             window.location.href = "login.html";
         }, 2000);
@@ -137,7 +131,6 @@ async function cadastrar() {
     }
 }
 
-// ─── Funções auxiliares ─────────────────────────────────────────────────
 function mostrarErroCampo(idErro, mensagem) {
     const el = document.getElementById(idErro);
     if (el) el.textContent = mensagem;
@@ -149,7 +142,7 @@ function limparTodosErros() {
 
 function mostrarFeedback(elemento, mensagem, tipo) {
     elemento.textContent = mensagem;
-    elemento.className = tipo; // classe "erro" ou "sucesso" para estilizar no CSS
+    elemento.className = tipo; 
     elemento.style.display = "block";
 }
 

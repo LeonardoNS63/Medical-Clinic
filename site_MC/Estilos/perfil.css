@@ -5,53 +5,14 @@ main#main_perfil {
     grid-template-columns: auto 95% auto;
 }
 
-section#section_busca {
+section#section_infos {
     grid-column: 2;
     background-color: #337d28;
     min-height: 100vh;
     padding: 10px;
 }
 
-/*div de busca*/
-
-div#input_busca {    
-    color: white;
-}
-
-div#input_busca p {
-    margin-left: 10px;
-    margin-bottom: 10px;
-}
-
-div#input_busca button {
-    margin-left: 20px;
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 1em;
-    margin-bottom: 20px;
-}
-
-input#input {
-    margin-left: 10px;
-    background-color: #baffa4;
-    margin-top: 15px;
-    font-size: 1.2em;
-    width: 100px;
-    border: 0px;
-    padding: 4px;
-} 
-
-fieldset#perfil {
-    display: flex;
-    padding: 10px;
-    width: 100%;
-}
-
-fieldset#perfil input {
-    margin-left: 10px;
-    margin-right: 10px;
-    text-align: center;
-}
+/*Div infos*/
 
 div#infos {
     padding: 20px;    
@@ -61,12 +22,7 @@ div#infos {
     box-shadow: 1px 1px 4px black;
 }
 
-
-/*Infos Display div*/
-
-div#infos_interno{
-    visibility: hidden;
-}
+/*Infos Display div interno*/
 
 div#infos_interno h3 {
     padding-bottom: 30px;
@@ -89,7 +45,6 @@ p.tipo_info {
 }
 
 p.display_info {
-    /*visibility: hidden;*/
     font-size: 1.4em;
 }
 

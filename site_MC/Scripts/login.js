@@ -1,12 +1,10 @@
 window.addEventListener("load", () => {
     document.getElementById("app").classList.add("show");
 
-    const token = localStorage.getItem("token");
-    if (token) {
-        window.location.href = "perfil.html";
+     if (TokenManager.tokenExpirou()) {
+        TokenManager.limparToken();
     }
 });
-
 
 document.addEventListener("keydown", (e) => {
     if (e.key === "Enter") login();
@@ -14,9 +12,9 @@ document.addEventListener("keydown", (e) => {
 
 
 async function login() {
-    const emailEl = document.getElementById("email");
-    const senhaEl = document.getElementById("senha");
-    const erroEl = document.getElementById("mensagem-erro");
+    const emailEl  = document.getElementById("email");
+    const senhaEl  = document.getElementById("senha");
+    const erroEl   = document.getElementById("mensagem-erro");
     const btnLogin = document.getElementById("btn-login");
 
     const email = emailEl.value.trim();
@@ -29,13 +27,11 @@ async function login() {
         emailEl.focus();
         return;
     }
-
     if (!validarFormatoEmail(email)) {
         mostrarErro(erroEl, "Digite um email válido.");
         emailEl.focus();
         return;
     }
-
     if (senha === "") {
         mostrarErro(erroEl, "Por favor, digite sua senha.");
         senhaEl.focus();
@@ -54,7 +50,7 @@ async function login() {
 
         if (resposta.status === 401) {
             mostrarErro(erroEl, "Email ou senha incorretos.");
-            senhaEl.value = ""; // limpa campo de senha por segurança
+            senhaEl.value = ""; 
             senhaEl.focus();
             return;
         }
@@ -66,20 +62,20 @@ async function login() {
 
         const dados = await resposta.json();
 
-        localStorage.setItem("token", dados.token);
-
+        TokenManager.limparToken();
+        TokenManager.salvarToken(dados.token);
+        
         window.location.href = "perfil.html";
 
     } catch (erro) {
-        mostrarErro(erroEl, "Não foi possível conectar ao servidor. Verifique sua conexão.");
+        mostrarErro(erroEl, "Não foi possível conectar ao servidor.");
         console.error("Erro no login:", erro);
     } finally {
+
         btnLogin.disabled = false;
         btnLogin.textContent = "Entrar";
     }
 }
-
-//Funções auxiliares
 
 function mostrarErro(elemento, mensagem) {
     elemento.textContent = mensagem;

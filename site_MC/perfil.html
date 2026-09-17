@@ -11,9 +11,10 @@
 <body>
     <Header>
         <h1 id="Titulo">
-            <i class="fa-solid fa-stethoscope"></i>
-            Medical Clinic
-        </h1>
+            <a href="index.html">
+                <i class="fa-solid fa-stethoscope"></i>
+                Medical Clinic
+            </a></h1>
 
         <nav id="Botoes">
             <a href="index.html">Início</a>
@@ -25,22 +26,8 @@
     </Header>
 
     <main id="main_perfil">
-        <section id="section_busca">
-            
-            <div id="input_busca">
-                <p>Digite o seu <b>id</b> para realizar a busca: </p>
-                <input type="text" id="input" placeholder="id">
-                <button id="buscar" onclick="buscar()">Buscar</button>
-                <br>
-                <fieldset id="perfil">
-                    <legend>Escolha seu perfil</legend>
-                    <input type="radio" name="perfil" id="paciente_checkbox"><label for="paciente" required> Paciente</label>
+        <section id="section_infos">
 
-                    <input type="radio" name="perfil" id="medico_checkbox"><label for="medico" required> Médico</label>
-
-                </fieldset>
-            
-            </div>
             <div id="infos">
                 <div id="infos_interno">
                     <h3 id="saudacao">Olá, nome</h3>
@@ -53,9 +40,11 @@
                     
                     <p class="tipo_info">Email</p>
                     <p id="email" class="display_info">.</p>
+
+                    <p class="tipo_info">Função de usuário</p>
+                    <p id="tipo-usuario" class="display_info">.</p>
                 </div>
-                <br>
-                <p id="p_result"></p>
+
             </div>
         </section>
         
@@ -66,9 +55,7 @@
 
     </footer>
 
-
-
-
+    <script src="Scripts/auth.js"></script>
     <script src="Scripts/perfil.js"></script>
     
 </body>

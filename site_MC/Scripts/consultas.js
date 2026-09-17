@@ -1,16 +1,24 @@
-function logout() {
-    localStorage.removeItem("token");
-    window.location.href = "login.html";
-}
-
-function verificarLogin() {
-    const token = localStorage.getItem("token");
+window.addEventListener("load", () => {
+    const token = TokenManager.obterToken();
     if (!token) {
         window.location.href = "login.html";
+        return;
     }
-}
 
-verificarLogin();
+    configurarLogoutAutomatico(); 
+    carregarDados();
+});
+
+async function carregarDados() {
+    const resposta = await fazerRequisicaoAutenticada(
+        "http://localhost:8080/doctors/1"
+    );
+
+    if (!resposta) return;
+
+    const dados = await resposta.json();
+    document.getElementById("nome").textContent = dados.nome;
+}
 
 window.addEventListener("load", () => {
     document.body.classList.add("loaded");

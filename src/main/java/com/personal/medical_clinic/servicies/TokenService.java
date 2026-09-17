@@ -19,8 +19,8 @@ public class TokenService {
         return JWT.create()
                 .withIssuer("medical-clinic")
                 .withSubject(usuario.getEmail())
-                .withClaim("role", usuario.getRole().name())
-                .withExpiresAt(Instant.now().plus(2, ChronoUnit.HOURS))
+                .withClaim("role", usuario.getRole().getValor())
+                .withExpiresAt(Instant.now().plus(5, ChronoUnit.MINUTES))
                 .sign(Algorithm.HMAC256(secret));
     }
 

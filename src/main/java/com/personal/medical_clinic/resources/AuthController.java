@@ -2,6 +2,7 @@ package com.personal.medical_clinic.resources;
 
 import com.personal.medical_clinic.dto.CadastroDTO;
 import com.personal.medical_clinic.dto.LoginDTO;
+import com.personal.medical_clinic.dto.PerfilDTO;
 import com.personal.medical_clinic.dto.TokenDTO;
 import com.personal.medical_clinic.entities.User;
 import com.personal.medical_clinic.servicies.TokenService;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = {"http://127.0.0.1:5500", "http://localhost:5500"})
@@ -28,19 +30,32 @@ public class AuthController {
     @Autowired
     private UserService usuarioService;
 
+    @GetMapping("/me")
+    public ResponseEntity<?> me() {
+        var usuario = (User) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
+
+        var dto = new PerfilDTO(
+                usuario.getNome(),
+                usuario.getEmail(),
+                usuario.getPhone(),
+                usuario.getRole().name()
+        );
+
+        return ResponseEntity.ok(dto);
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid LoginDTO dados) {
         try {
-            // Monta as credenciais e manda pro Spring Security validar
             var credenciais = new UsernamePasswordAuthenticationToken(
                     dados.email(),
                     dados.senha()
             );
 
-            // O Spring compara a senha digitada com o hash BCrypt salvo no banco
             var auth = authenticationManager.authenticate(credenciais);
 
-            // Se chegou aqui, as credenciais são válidas — gera o token
             var token = tokenService.gerarToken((User) auth.getPrincipal());
 
             return ResponseEntity.ok(new TokenDTO(token));
@@ -57,7 +72,7 @@ public class AuthController {
             return ResponseEntity.status(201).body("Usuário cadastrado com sucesso.");
 
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(409).body(e.getMessage()); // 409 = Conflict
+            return ResponseEntity.status(409).body(e.getMessage());
         }
     }
 }

@@ -23,31 +23,34 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Autowired
     private UserRepository usuarioRepository;
 
+
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
-                                    FilterChain filterChain)
-            throws ServletException, IOException {
+                                    FilterChain filterChain) throws ServletException, IOException {
 
         var token = recuperarToken(request);
+        System.out.println("=== SecurityFilter ===");
+        System.out.println("URL: " + request.getRequestURI());
+        System.out.println("Token recebido: " + (token != null ? "SIM" : "NÃO"));
 
         if (token != null) {
             var email = tokenService.validarToken(token);
+            System.out.println("Email do token: " + email);
 
             if (email != null) {
+                var usuario = usuarioRepository.findByEmail(email).orElse(null);
+                System.out.println("Usuário encontrado: " + (usuario != null ? "SIM" : "NÃO"));
 
-                //Busca o usuário no banco pelo email extraído do token
-                var usuario = usuarioRepository.findByEmail(email)
-                        .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                if (usuario != null) {
+                    System.out.println("Authorities: " + usuario.getAuthorities());
 
-                //Registra o usuário como autenticado no contexto da requisição
-                var authentication = new UsernamePasswordAuthenticationToken(
-                        usuario,
-                        null,
-                        usuario.getAuthorities()
-                );
-
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                    var authentication = new UsernamePasswordAuthenticationToken(
+                            usuario, null, usuario.getAuthorities()
+                    );
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                    System.out.println("Usuário autenticado no contexto ✅");
+                }
             }
         }
 
