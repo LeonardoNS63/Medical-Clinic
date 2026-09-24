@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Estilos/login.css">
+    <script src="https://kit.fontawesome.com/f3aa759ed5.js" crossorigin="anonymous"></script>
     <title>Login — Clínica Médica</title>
 </head>
 <body>
@@ -10,7 +12,10 @@
     <div id="app">
 
         <header>
-            <h1>Medical Clinic</h1>
+            <h1 id="Titulo">
+                <i class="fa-solid fa-stethoscope"></i>
+                Medical Clinic
+            </h1>
             <p>Acesse sua conta</p>
         </header>
 
@@ -18,33 +23,40 @@
             <section id="secao-login">
                 <h2>Login</h2>
 
-                <div>
-                    <label for="email">Email</label>
+                <p id="mensagem-erro" style="display: none;"></p>
+
+                <div id="email-input" class="inputs">
+                    <label for="email"><i class="fa-regular fa-envelope"></i></label>
                     <input 
                         type="email" 
-                        id="email" 
+                        id="email"
+                        class="input-login" 
                         placeholder="Digite seu email"
                         autocomplete="email"
                     >
                 </div>
 
-                <div>
-                    <label for="senha">Senha</label>
+                <div id="senha-input" class="inputs">
+                    <label for="senha"><i class="fa-solid fa-key"></i></label>
                     <input 
                         type="password" 
                         id="senha" 
+                        class="input-login"
                         placeholder="Digite sua senha"
                         autocomplete="current-password"
                     >
                 </div>
 
                 <!-- Mensagem de erro/feedback -->
-                <p id="mensagem-erro" style="display: none;"></p>
 
-                <button id="btn-login" onclick="login()">Entrar</button>
+                <div id="div-botao">
+                    <button id="btn-login" onclick="login()">Entrar</button>
+                </div>
 
-                <p>Não tem uma conta? <a href="cadastro.html">Cadastre-se</a></p>
+                <p id="cadastro">Não tem uma conta? <a href="cadastro.html">Cadastre-se</a></p>
+
             </section>
+            <br>
         </main>
 
     </div>

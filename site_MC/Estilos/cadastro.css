@@ -1,0 +1,155 @@
+
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+header {
+    text-align: center;
+    background-color: #569d47;
+    color: white;
+    padding: 20px;
+}
+
+header p {
+    font-size: 1.2em;
+}
+
+body {
+    background-color: #77be66;
+}
+
+section#secao-cadastro {
+    background-color: #337d28;
+    border-radius: 15px;
+    grid-column: 2;
+    grid-row: 2;
+    height: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+main {
+    display: grid;
+    grid-template-columns: auto 95% auto;
+    grid-template-rows: 1fr auto 1fr;
+}
+
+h2 {
+    text-align: center;
+    color: white;
+    padding: 10px;
+    padding-bottom: 30px;
+    font-size: 1.8em;
+}
+
+label {
+    color: white;
+    font-size: large;
+}
+
+div.inputs {
+    background-color: rgb(34, 81, 26);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+input.input-cadastro {
+    background-color: #98de85;
+    border: none;
+    border-radius: 10px;
+    padding: 5px;
+    width: 70vw;
+    margin-top: 10px;
+    margin-left: 10px;
+    font-size: 1.3em;
+}
+
+input.input-cadastro::placeholder {
+    color: rgba(0, 0, 0, 0.68);
+}
+
+input.input-cadastro:focus-within {
+    background-color: white;
+    padding: 5px;
+}
+
+p {
+    color: white;
+    font-size: large;
+    text-align: center;
+    padding-top: 10px;
+}
+
+p#mensagem-feedback {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+p#fazer-login {
+    margin-bottom: 40px;
+}
+
+span.campo-erro {
+    color: red;
+    font-weight: bold;
+    margin: 20px;
+}
+
+div#radio-perfil {
+    display: flex;
+    gap: 15px; 
+    margin: 15px 10px;
+}
+
+div#radio-perfil label {
+    flex: 1; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px 10px; 
+    background-color: rgb(34, 81, 26);
+    color: white;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+div#radio-perfil input[type="radio"] {
+    width: 22px;
+    height: 22px;
+    margin: 0;
+    accent-color: #77be66; 
+}
+
+div#radio-perfil label:has(input:checked) {
+    background-color: #337d28; 
+    border-color: #77be66; 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+
+div#div-botao {
+    display: flex;
+    justify-content: center;
+}
+
+button#btn-cadastrar {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2em;  
+    width: 50%;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    cursor: pointer;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.486);
+}
+

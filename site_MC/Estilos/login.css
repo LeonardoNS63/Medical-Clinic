@@ -1,0 +1,103 @@
+
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+body {
+    background-color: #77be66;
+}
+
+main { 
+    display: grid;
+    grid-template-columns: auto 95% auto;
+    grid-template-rows: 1fr auto 1fr;
+    min-height: calc(100vh - 120px);
+}
+
+header {
+    text-align: center;
+    padding: 20px;
+    color: white;
+    background-color: #569d47;
+    margin-bottom: 10px;
+}
+
+section#secao-login {  
+    grid-row: 2;  
+    grid-column: 2;
+    background-color: #337d28;
+    height: 500px;
+    color: white;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    padding-bottom: 23px;  
+}
+
+h2 { 
+    text-align: center;
+    padding: 20px;
+    font-size: 1.8em;
+}
+
+div.inputs {
+    background-color: rgb(34, 81, 26);
+    padding: 10px;
+    margin: 10px;
+    margin-bottom: 30px;
+    border-radius: 15px;
+}
+
+input.input-login {
+    margin-left: 10px;
+    padding: 5px;
+    font-size: 1em;
+    width: 70vw;
+    background-color: #98de85;
+    border: 0px;
+    border-radius: 10px;
+    color: white;
+}
+
+input.input-login::placeholder {
+    color: rgba(0, 0, 0, 0.68);
+}
+
+input.input-login:focus-within {
+    background-color: white;
+    color: black;
+    border: none;    
+}
+
+div#div-botao {
+    display: flex;
+    justify-content: center;
+}
+
+button#btn-login {
+    border: none;
+    width: 50%;
+    font-size: 1.2em;
+    cursor: pointer;
+    height: 40px;
+    border-radius: 5px;
+    margin-top: 20px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.486);
+}
+
+p#cadastro {
+    text-align: center;
+    margin-top: 50px;
+}
+
+p#mensagem-erro {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+p {
+    padding-top: 10px;
+    font-size: large;
+}

@@ -3,14 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro</title>
+    <link rel="stylesheet" href="Estilos/cadastro.css">
+    <script src="https://kit.fontawesome.com/f3aa759ed5.js" crossorigin="anonymous"></script>
+    <title>Cadastro — Clínica Médica</title>
 </head>
 <body>
 
     <div id="app">
 
         <header>
-            <h1>Medical Clinic</h1>
+            <h1><i class="fa-solid fa-stethoscope"></i>
+                Medical Clinic</h1>
             <p>Crie sua conta</p>
         </header>
 
@@ -18,66 +21,71 @@
             <section id="secao-cadastro">
                 <h2>Cadastro</h2>
 
-                <div>
-                    <label for="nome">Nome completo</label>
+                <div class="inputs">
+                    <label for="nome">Nome :</label> <br>
                     <input 
                         type="text" 
+                        class="input-cadastro"
                         id="nome" 
                         placeholder="Digite seu nome completo"
                         autocomplete="name"
-                    >
+                    ><br>
                     <span class="campo-erro" id="erro-nome"></span>
                 </div>
 
-                <div>
-                    <label for="email">Email</label>
+                <div class="inputs">
+                    <label for="email">Email :</label> <br>
                     <input 
                         type="email" 
+                        class="input-cadastro"
                         id="email" 
                         placeholder="Digite seu email"
                         autocomplete="email"
-                    >
+                    ><br>
                     <span class="campo-erro" id="erro-email"></span>
                 </div>
                 
-                <div>
-                    <label for="telefone">Telefone</label>
+                <div class="inputs">
+                    <label for="telefone">Telefone :</label> <br>
                     <input 
                         type="tel" 
+                        class="input-cadastro"
                         id="telefone" 
                         placeholder="(11) 91234-5678"
                         maxlength="15"
                         autocomplete="tel"
-                    >
+                    ><br>
                     <span class="campo-erro" id="erro-telefone"></span>
                 </div>
 
-                <div>
-                    <label for="senha">Senha</label>
+                <div class="inputs">
+                    <label for="senha">Senha :</label> <br>
                     <input 
                         type="password" 
+                        class="input-cadastro"
                         id="senha" 
                         placeholder="Mínimo 6 caracteres"
                         autocomplete="new-password"
-                    >
+                    ><br>
                     <span class="campo-erro" id="erro-senha"></span>
                 </div>
 
-                <div>
-                    <label for="confirmar-senha">Confirmar senha</label>
+                <div class="inputs">
+                    <label for="confirmar-senha">Confirmar senha :</label> <br>
                     <input 
                         type="password" 
+                        class="input-cadastro"
                         id="confirmar-senha" 
                         placeholder="Repita sua senha"
                         autocomplete="new-password"
-                    >
+                    ><br>
                     <span class="campo-erro" id="erro-confirmar-senha"></span>
                 </div>
 
                 <div>
-                    <label>Tipo de perfil</label>
+                    <p id="tipo-perfil">Tipo do Perfil : </p>
 
-                    <div>
+                    <div id="radio-perfil">
                         <label>
                             <input type="radio" name="role" id="role-paciente" value="PACIENTE" checked>
                             Paciente
@@ -92,12 +100,15 @@
                     <span class="campo-erro" id="erro-role"></span>
                 </div>
 
+                <div id="div-botao">
+                    <button id="btn-cadastrar" onclick="cadastrar()">Criar conta</button>
+                </div>
+
                 <p id="mensagem-feedback" style="display: none;"></p>
 
-                <button id="btn-cadastrar" onclick="cadastrar()">Criar conta</button>
-
-                <p>Já tem uma conta? <a href="login.html">Faça login</a></p>
+                <p id="fazer-login">Já tem uma conta? <a href="login.html">Faça login</a></p>
             </section>
+            <br>
         </main>
 
     </div>
