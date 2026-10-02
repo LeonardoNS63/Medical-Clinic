@@ -3,51 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultas — Medical Clinic</title>
     <link rel="stylesheet" href="Estilos/header.css">
-    <link rel="stylesheet" href="Estilos/perfil.css">
     <script src="https://kit.fontawesome.com/f3aa759ed5.js" crossorigin="anonymous"></script>
-    <title>Medical Clinic</title>
 </head>
 <body>
-    <Header>
+
+    <header>
         <h1 id="Titulo">
             <a href="inicio.html">
                 <i class="fa-solid fa-stethoscope"></i>
                 Medical Clinic
             </a></h1>
-
         <nav id="Botoes">
             <a href="inicio.html">Início</a>
             <a href="perfil.html">Perfil</a>
             <a href="consultas.html">Minhas Consultas</a>
-            
+            <a id="login-botao" href="login.html">Login</a>
+            <a href="inicio.html" onclick="fazerLogout()">Sair</a>
         </nav>
+    </header>
 
-    </Header>
+    <main id="main_consultas">
 
-    <main id="main_perfil">
-        <section id="section_busca">
-            
-            <div id="input_busca">
-                <p>Digite o seu <b>id</b> para realizar a busca: </p>
-                <input type="text" id="input" placeholder="id">
-                <button id="buscar" onclick="buscarConsulta()">Buscar</button>
+        <!-- ══ VISÃO DO PACIENTE ══════════════════════════════════ -->
+        <section id="secao-paciente" style="display: none;">
+
+            <!-- Formulário de solicitação -->
+            <div id="card-solicitar">
+                <h2>Solicitar Nova Consulta</h2>
+
+                <div class="campo">
+                    <label for="tipo-consulta">Tipo de consulta</label>
+                    <select id="tipo-consulta">
+                        <option value="">Selecione...</option>
+                        <option value="MEDICO_GERAL">Médico Geral</option>
+                        <option value="ORTOPEDIA">Ortopedia</option>
+                        <option value="ENDOCRINOLOGIA">Endocrinologia</option>
+                        <option value="CARDIOLOGIA">Cardiologia</option>
+                        <option value="DERMATOLOGIA">Dermatologia</option>
+                        <option value="GINECOLOGIA">Ginecologia</option>
+                        <option value="PEDIATRIA">Pediatria</option>
+                    </select>
+                    <span class="erro-campo" id="erro-tipo"></span>
+                </div>
+
+                <div class="campo">
+                    <label for="descricao">Descrição / Queixa (opcional)</label>
+                    <textarea id="descricao" rows="3" placeholder="Descreva brevemente o motivo da consulta..."></textarea>
+                </div>
+
+                <p id="feedback-solicitar" style="display: none;"></p>
+                <button id="btn-solicitar" onclick="solicitarConsulta()">Solicitar Consulta</button>
             </div>
-            <div id="resultado">
-                <p id="p_result"></p>
+
+            <!-- Lista de consultas do paciente -->
+            <div id="card-minhas-consultas">
+                <h2>Minhas Consultas</h2>
+                <div id="lista-paciente">
+                    <p id="loading-paciente">Carregando...</p>
+                </div>
             </div>
+
         </section>
-        
+
+        <!-- ══ VISÃO DO MÉDICO ════════════════════════════════════ -->
+        <section id="secao-medico" style="display: none;">
+
+            <!-- Consultas pendentes disponíveis -->
+            <div id="card-pendentes">
+                <h2>Consultas Disponíveis</h2>
+                <p id="subtitulo-pendentes">Escolha uma consulta para agendar</p>
+                <div id="lista-pendentes">
+                    <p id="loading-pendentes">Carregando...</p>
+                </div>
+            </div>
+
+            <!-- Modal de agendamento -->
+            <div id="modal-agendar" style="display: none;">
+                <div id="modal-conteudo">
+                    <h3>Agendar Consulta</h3>
+                    <p id="modal-info-consulta"></p>
+
+                    <div class="campo">
+                        <label for="data-agendada">Data</label>
+                        <input type="date" id="data-agendada">
+                        <span class="erro-campo" id="erro-data"></span>
+                    </div>
+
+                    <div class="campo">
+                        <label for="hora-agendada">Horário</label>
+                        <input type="time" id="hora-agendada">
+                        <span class="erro-campo" id="erro-hora"></span>
+                    </div>
+
+                    <div class="campo">
+                        <label for="local-consulta">Local</label>
+                        <input type="text" id="local-consulta" placeholder="Ex: Clínica Central, Sala 5">
+                        <span class="erro-campo" id="erro-local"></span>
+                    </div>
+
+                    <p id="feedback-agendar" style="display: none;"></p>
+
+                    <div id="botoes-modal">
+                        <button id="btn-confirmar-agendamento" onclick="confirmarAgendamento()">Confirmar</button>
+                        <button id="btn-cancelar-modal" onclick="fecharModal()">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Consultas já agendadas pelo médico -->
+            <div id="card-agendadas">
+                <h2>Minhas Consultas Agendadas</h2>
+                <div id="lista-agendadas">
+                    <p id="loading-agendadas">Carregando...</p>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ══ ACESSO NEGADO ══════════════════════════════════════ -->
+        <section id="secao-admin" style="display: none;">
+            <p>Administradores não têm acesso à área de consultas.</p>
+        </section>
 
     </main>
 
-    <footer>
-
-    </footer>
-
-
     <script src="Scripts/auth.js"></script>
     <script src="Scripts/consultas.js"></script>
-    
+
 </body>
 </html>

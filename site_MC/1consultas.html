@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Estilos/header.css">
+    <link rel="stylesheet" href="Estilos/perfil.css">
+    <script src="https://kit.fontawesome.com/f3aa759ed5.js" crossorigin="anonymous"></script>
+    <title>Medical Clinic</title>
+</head>
+<body>
+    <Header>
+        <h1 id="Titulo">
+            <a href="inicio.html">
+                <i class="fa-solid fa-stethoscope"></i>
+                Medical Clinic
+            </a></h1>
+
+        <nav id="Botoes">
+            <a href="inicio.html">Início</a>
+            <a href="perfil.html">Perfil</a>
+            <a href="consultas.html">Minhas Consultas</a>
+            
+        </nav>
+
+    </Header>
+
+    <main id="main_perfil">
+        <section id="section_busca">
+            
+            <div id="input_busca">
+                <p>Digite o seu <b>id</b> para realizar a busca: </p>
+                <input type="text" id="input" placeholder="id">
+                <button id="buscar" onclick="buscarConsulta()">Buscar</button>
+            </div>
+            <div id="resultado">
+                <p id="p_result"></p>
+            </div>
+        </section>
+        
+
+    </main>
+
+    <footer>
+
+    </footer>
+
+
+    <script src="Scripts/auth.js"></script>
+    <script src="Scripts/consultas.js"></script>
+    
+</body>
+</html>
