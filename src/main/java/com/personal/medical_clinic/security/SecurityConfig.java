@@ -45,6 +45,7 @@ public class SecurityConfig {
                         .requestMatchers("/auth/login", "/auth/cadastro").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/appointments/**").authenticated()
                         .requestMatchers(PathRequest.toH2Console()).permitAll()
                         .anyRequest().authenticated()
                 )

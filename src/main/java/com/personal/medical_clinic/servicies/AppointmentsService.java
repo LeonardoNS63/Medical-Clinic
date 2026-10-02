@@ -1,91 +1,125 @@
 package com.personal.medical_clinic.servicies;
 
+import com.personal.medical_clinic.dto.AppointmentResponseDTO;
+import com.personal.medical_clinic.dto.ApproveAppointmentDTO;
+import com.personal.medical_clinic.dto.RequestAppointmentDTO;
 import com.personal.medical_clinic.entities.Appointments;
 import com.personal.medical_clinic.entities.Medic;
 import com.personal.medical_clinic.entities.Patient;
+import com.personal.medical_clinic.entities.User;
+import com.personal.medical_clinic.entities.enums.AppointmentsStatus;
 import com.personal.medical_clinic.repository.AppointmentsRepository;
 import com.personal.medical_clinic.repository.MedicRepository;
 import com.personal.medical_clinic.repository.PatientRepository;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AppointmentsService {
 
-    @Autowired
-    private MedicRepository medicRepository;
+    @Autowired private AppointmentsRepository appointmentsRepository;
+    @Autowired private PatientRepository patientRepository;
+    @Autowired private MedicRepository medicRepository;
 
-    @Autowired
-    private PatientRepository patientRepository;
+    // ── Métodos auxiliares ──────────────────────────────────────
 
-    @Autowired
-    private AppointmentsRepository appointmentsRepository;
-
-    public List<Appointments> findAll() { return appointmentsRepository.findAll(); }
-
-    public Appointments findById(Long id) {
-        Optional<Appointments> obj = appointmentsRepository.findById(id);
-        return obj.get();
+    private User usuarioLogado() {
+        return (User) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
     }
 
-    public void delete(Long id) { appointmentsRepository.deleteById(id); }
-
-    public Appointments update(Long id, Appointments obj) {
-        Appointments entity = appointmentsRepository.getReferenceById(id);
-        validateConflict(obj.getMedic().getId(), obj.getPatient().getId(), obj.getMoment(), id);
-        updateData(entity, obj);
-        return appointmentsRepository.save(entity);
+    private Patient pacienteLogado() {
+        User user = usuarioLogado();
+        return patientRepository.findByUsuarioId(user.getId())
+                .orElseThrow(() -> new RuntimeException("Paciente não encontrado"));
     }
 
-    private void updateData(Appointments entity, Appointments obj) {
-        entity.setMedic(obj.getMedic());
-        entity.setPatient(obj.getPatient());
-        entity.setMoment(obj.getMoment());
-        entity.setDoctorName(obj.getDoctorName());
-        entity.setPatientName(obj.getPatientName());
+    private Medic medicoLogado() {
+        User user = usuarioLogado();
+        return medicRepository.findByUsuarioId(user.getId())
+                .orElseThrow(() -> new RuntimeException("Médico não encontrado"));
     }
 
-    @Transactional
-    public Appointments create(Appointments obj) {
+    // ── Endpoints do Paciente ───────────────────────────────────
 
-        Medic medic = medicRepository.findById(obj.getMedic().getId())
-                .orElseThrow(() -> new EntityNotFoundException("Médico não encontrado"));
+    public AppointmentResponseDTO solicitar(RequestAppointmentDTO dto) {
+        Patient patient = pacienteLogado();
 
-        Patient patient = patientRepository.findById(obj.getPatient().getId())
-                .orElseThrow(() -> new EntityNotFoundException("Paciente não encontrado"));
-
-        validateConflict(obj.getMedic().getId(), obj.getPatient().getId(), obj.getMoment(), null);
-
-        obj.setDoctorName(medic.getName());
-        obj.setPatientName(patient.getName());
-
-        return appointmentsRepository.save(obj);
-    }
-
-    private void validateConflict(Long medicId, Long patientId, Instant moment, Long excludeId) {
-        Instant start = moment.minus(30, ChronoUnit.MINUTES);
-        Instant end = moment.plus(30, ChronoUnit.MINUTES);
-
-        boolean conflict = appointmentsRepository.existsConflict(
-                medicId,
-                patientId,
-                start,
-                end,
-                excludeId
+        Appointments consulta = new Appointments(
+                null,
+                Instant.now(),
+                dto.tipo(),
+                dto.descricao(),
+                patient
         );
 
-        if (conflict) {
-            throw new IllegalArgumentException(
-                    "Médico ou paciente já possui consulta neste intervalo de 30 minutos."
-            );
-        }
+        return AppointmentResponseDTO.from(appointmentsRepository.save(consulta));
     }
 
+    public List<AppointmentResponseDTO> minhasConsultas() {
+        Patient patient = pacienteLogado();
+        return appointmentsRepository.findByPatientId(patient.getId())
+                .stream()
+                .map(AppointmentResponseDTO::from)
+                .toList();
+    }
+
+    public void cancelar(Long id) {
+        Patient patient = pacienteLogado();
+
+        Appointments consulta = appointmentsRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Consulta não encontrada"));
+
+        if (!consulta.getPatient().getId().equals(patient.getId())) {
+            throw new RuntimeException("Você não tem permissão para cancelar esta consulta");
+        }
+
+        if (consulta.getStatus() == AppointmentsStatus.APROVADA) {
+            throw new RuntimeException("Não é possível cancelar uma consulta já aprovada");
+        }
+
+        consulta.setStatus(AppointmentsStatus.CANCELADA);
+        appointmentsRepository.save(consulta);
+    }
+
+    // ── Endpoints do Médico ─────────────────────────────────────
+
+    public List<AppointmentResponseDTO> consultasPendentes() {
+        return appointmentsRepository.findByStatus(AppointmentsStatus.PENDENTE)
+                .stream()
+                .map(AppointmentResponseDTO::from)
+                .toList();
+    }
+
+    public AppointmentResponseDTO aprovar(Long id, ApproveAppointmentDTO dto) {
+        Medic medic = medicoLogado();
+
+        Appointments consulta = appointmentsRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Consulta não encontrada"));
+
+        if (consulta.getStatus() != AppointmentsStatus.PENDENTE) {
+            throw new RuntimeException("Só é possível aprovar consultas PENDENTES");
+        }
+
+        consulta.setMedic(medic);
+        consulta.setStatus(AppointmentsStatus.APROVADA);
+        consulta.setDataAgendada(dto.dataAgendada());
+        consulta.setHoraAgendada(dto.horaAgendada());
+        consulta.setLocal(dto.local());
+
+        return AppointmentResponseDTO.from(appointmentsRepository.save(consulta));
+    }
+
+    public List<AppointmentResponseDTO> consultasAgendadas() {
+        Medic medic = medicoLogado();
+        return appointmentsRepository.findByMedicIdAndStatus(medic.getId(), AppointmentsStatus.APROVADA)
+                .stream()
+                .map(AppointmentResponseDTO::from)
+                .toList();
+    }
 }
